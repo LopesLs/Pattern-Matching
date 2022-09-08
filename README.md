@@ -3,53 +3,6 @@ Pattern Matching
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gvanrossum/patma/master?urlpath=lab/tree/playground-622.ipynb)
 
-This repo contains an issue tracker, examples, and early work related to
-[PEP 622: Structural Pattern Matching](https://www.python.org/dev/peps/pep-0622). The current version of the proposal is
-[PEP 634](https://www.python.org/dev/peps/pep-0634),
-which was **accepted** by the Steering Council on February 8, 2021.
-The motivation and rationale are written up in
-[PEP 635](https://www.python.org/dev/peps/pep-0635),
-and a tutorial is in [PEP 636](https://www.python.org/dev/peps/pep-0636).
-The tutorial below is also included in PEP 636 as
-[Appendix A](https://www.python.org/dev/peps/pep-0636/#appendix-a-quick-intro).
-
-Updates to the PEPs should be made in the
-[PEPs repo](https://github.com/python/peps).
-
-Origins
--------
-
-The work has several origins:
-
-- Many statically compiled languages (especially functional ones) have
-  a `match` expression, for example
-  [Scala](http://www.scala-lang.org/files/archive/spec/2.11/08-pattern-matching.html),
-  [Rust](https://doc.rust-lang.org/reference/expressions/match-expr.html),
-  [F#](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/pattern-matching);
-- Several extensive discussions on python-ideas, culminating in a
-  summarizing
-  [blog post](https://tobiaskohn.ch/index.php/2018/09/18/pattern-matching-syntax-in-python/)
-  by Tobias Kohn;
-- An independently developed [draft
-  PEP](https://github.com/ilevkivskyi/peps/blob/pattern-matching/pep-9999.rst)
-  by Ivan Levkivskyi.
-
-Implementation
---------------
-
-A full reference implementation written by Brandt Bucher is available
-as a [fork](https://github.com/brandtbucher/cpython/tree/patma) of
-the CPython repo.  This is readily converted to a [pull
-request](https://github.com/brandtbucher/cpython/pull/2).
-
-For those who prefer not to build a CPython binary from source there's
-a Binder playground -- click the button at the top of this readme.
-
-Examples
---------
-
-Some [example code](examples/) is available from this repo.
-
 Tutorial
 --------
 
