@@ -1,17 +1,12 @@
 Pattern Matching
 ================
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gvanrossum/patma/master?urlpath=lab/tree/playground-622.ipynb)
+Uma instrução `match` pega uma expressão e a compara a sucessivas
+padrões dados como um ou mais blocos `case`. Isso é superficialmente
+semelhante a uma instrução `switch` em C, Java ou JavaScript (e muitos
+outras línguas), mas muito mais poderoso.
 
-Tutorial
---------
-
-A `match` statement takes an expression and compares it to successive
-patterns given as one or more `case` blocks.  This is superficially
-similar to a `switch` statement in C, Java or JavaScript (and many
-other languages), but much more powerful.
-
-The simplest form compares a subject value against one or more literals:
+A forma mais simples de Match Case compara um valor de assunto com um ou mais literais:
 
 ```py
 def http_error(status):
@@ -30,18 +25,22 @@ def http_error(status):
             return "Something else"
 ```
 
-Note the last block: the "variable name" `_` acts as a *wildcard* and
-never fails to match.
+Observe o último bloco: o "nome da variável" `_` atua como um *curinga* e
+sempre executa quando não for nenhum dos casos.
 
-You can combine several literals in a single pattern using `|` ("or"):
+--------
+
+Você pode combinar vários literais em um único padrão usando `|` ("ou"):
 
 ```py
         case 401|403|404:
             return "Not allowed"
 ```
 
-Patterns can look like unpacking assignments, and can be used to bind
-variables:
+--------
+
+O que é passado para o case pode ser atribuições de descompactação e podem ser usados para vincular
+variáveis:
 
 ```py
 # The subject is an (x, y) tuple
@@ -58,16 +57,17 @@ match point:
         raise ValueError("Not a point")
 ```
 
-Study that one carefully!  The first pattern has two literals, and can
-be thought of as an extension of the literal pattern shown above.  But
-the next two patterns combine a literal and a variable, and the
-variable *captures* a value from the subject (`point`).  The fourth
-pattern captures two values, which makes it conceptually similar to
-the unpacking assignment `(x, y) = point`.
+Estude isso com atenção! O primeiro padrão tem dois literais e pode
+ser pensado como uma extensão do padrão literal mostrado acima. Mas
+os próximos dois padrões combinam um literal e uma variável, e o
+variável *captura* um valor do assunto (`x` ou `y`). O quarto
+padrão captura dois valores, o que o torna conceitualmente semelhante a
+a atribuição de descompactação.
 
-If you are using classes to structure your data (e.g. data classes)
-you can use the class name followed by an argument list resembling a
-constructor, but with the ability to capture variables:
+--------
+
+Se você estiver usando classes para estruturar seus dados você pode usar o nome da classe seguido por uma lista de argumentos semelhante a um
+construtor, mas com a capacidade de capturar variáveis
 
 ```py
 from dataclasses import dataclass
@@ -91,36 +91,11 @@ def whereis(point):
             print("Not a point")
 ```
 
-We can use keyword parameters too.  The following patterns are all
-equivalent (and all bind the `y` attribute to the `var` variable):
+--------
 
-```py
-Point(1, var)
-Point(1, y=var)
-Point(x=1, y=var)
-Point(y=var, x=1)
-```
-
-Patterns can be arbitrarily nested.  For example, if we have a short
-list of points, we could match it like this:
-
-```py
-match points:
-    case []:
-        print("No points")
-    case [Point(0, 0)]:
-        print("The origin")
-    case [Point(x, y)]:
-        print(f"Single point {x}, {y}")
-    case [Point(0, y1), Point(0, y2)]:
-        print(f"Two on the Y axis at {y1}, {y2}")
-    case _:
-        print("Something else")
-```
-
-We can add an `if` clause to a pattern, known as a "guard".  If the
-guard is false, `match` goes on to try the next `case` block.  Note
-that value capture happens before the guard is evaluated:
+Podemos adicionar uma cláusula `if` a um padrão, conhecido como "guard". Se o
+guard for false, `match` continua para tentar o próximo bloco `case`. Observação
+que a captura de valor acontece antes que a guarda seja avaliada:
 
 ```py
 match point:
@@ -130,32 +105,9 @@ match point:
         print(f"Not on the diagonal")
 ```
 
-Several other key features:
+--------
 
-- Like unpacking assignments, tuple and list patterns have exactly the
-  same meaning and actually match arbitrary sequences.  An important
-  exception is that they don't match iterators or strings.
-  (Technically, the subject  must be an instance of
-  `collections.abc.Sequence`.)
-
-- Sequence patterns support wildcards: `[x, y, *rest]` and `(x, y,
-  *rest)` work similar to wildcards in unpacking assignments.  The
-  name after `*` may also be `_`, so `(x, y, *_)` matches a sequence
-  of at least two items without binding the remaining items.
-
-- Mapping patterns: `{"bandwidth": b, "latency": l}` captures the
-  `"bandwidth"` and `"latency"` values from a dict.  Unlike sequence
-  patterns, extra keys are ignored.  A wildcard `**rest` is also
-  supported.  (But `**_` would be redundant, so it is not allowed.)
-
-- Subpatterns may be captured using the `as` operator:
-
-  ```py
-  case (Point(x1, y1), Point(x2, y2) as p2): ...
-  ```
-
-- Patterns may use named constants.  These must be dotted names
-  to prevent them from being interpreted as capture variable:
+Os padrões podem usar constantes nomeadas. Estes devem ser nomes pontilhados para evitar que sejam interpretados como variável de captura:
 
   ```py
   from enum import Enum
@@ -172,9 +124,12 @@ Several other key features:
       case Color.BLUE:
           print("I'm feeling the blues :(")
   ```
-
-- The literals `None`, `False` and `True` are treated specially:
-  comparisons to the subject are done using `is`.  This:
+  
+  --------
+  
+- Os literais `None`, `False` e `True` são tratados de forma especial:
+  comparações com o assunto são feitas usando `is`.
+  
   ```py
   match b:
       case True:
@@ -186,7 +141,9 @@ Several other key features:
       print("Yes!")
   ```
 
-- Classes may override the mapping from positional arguments to
-  attributes by setting a class variable `__match_args__`.
-  Read about it in the
+--------
+
+- As classes podem substituir o mapeamento de argumentos posicionais para
+  atributos definindo uma variável de classe `__match_args__`.
+  
   [PEP](https://www.python.org/dev/peps/pep-0622/#special-attribute-match-args).
