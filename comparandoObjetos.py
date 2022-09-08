@@ -7,7 +7,7 @@ class Pessoa:
 
 def buscainfo(pessoa : Pessoa):
     match pessoa:
-        case Pessoa('Carlos' | 'Michel'):
+        case Pessoa('Carlos' | 'Michel' | 'Emanuel'):
             return 'Programa em python'
         case Pessoa(_, _) as alguem if alguem.idade > 18:
             return f'O nome é {alguem.nome} é maior que 18 anos'
